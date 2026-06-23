@@ -40,6 +40,20 @@ An off-camera participant should still feel present when they talk:
 
 The product should avoid leaving a large empty video frame or a frozen black box where the participant would be.
 
+## Preview Contexts
+
+A presence style can read well in one shot and feel wrong in the next, so creators should judge it on the moments where an audio-only participant is most visible:
+
+- a solo moment where the off-camera participant is the only one speaking
+- a split with an on-camera speaker so the relative focus reads correctly
+- the presence element shown under the chosen preset with brand colors and lower-thirds
+- the hand-off moment when focus returns to the on-camera speakers
+- a quieter stretch where the participant is present but not speaking
+
+Compare the presence style against at least one on-camera speaker in the same view, and keep the chosen preset framing visible so the audio-only participant still feels designed once the episode is styled.
+
+Avoid exposing compositing previews, avatar rigging frames, or audio-reactive animation readouts in these previews.
+
 ## Creator Controls
 
 Keep the choice creator-facing and tied to the show's look:
