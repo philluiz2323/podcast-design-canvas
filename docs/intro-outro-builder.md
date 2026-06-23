@@ -41,6 +41,20 @@ Reusable intros and outros should store structure and brand treatment while repl
 
 Intro and outro issues that would affect the chosen export destination should surface in `docs/export-readiness-review.md` Intro And Outro Warnings.
 
+## Creator Controls
+
+Building an intro or outro should stay a quick, per-episode editing step rather than a fixed template slide. The creator should be able to:
+
+- reorder or remove individual intro and outro elements
+- shorten or skip the intro for a specific episode without breaking the saved template
+- pull host, guest, topic, and metadata details from episode context, then edit them before applying
+- swap the music or sound cue placeholder for an approved cue
+- preview the opening and closing against the episode's real first and last speaker moments, not a detached slide
+- keep, remove, or adapt each outro element for the current episode only
+- confirm sponsor disclosure or acknowledgement when the episode requires it
+
+Defaults should favor a short, branded opening. A creator should never be forced to keep a long intro on an episode that does not need one, and per-episode edits should not overwrite the reusable template unless the creator chooses to save them back.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes openings and endings feel consistent, branded, and episode-aware. Close work that hard-codes a single show format, forces long intros on every episode, or treats intros and outros as unrelated video assets.
