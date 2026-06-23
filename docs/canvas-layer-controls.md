@@ -85,6 +85,18 @@ When a canvas layout is saved as a reusable template, each adaptable element sho
 
 The saved layout is applied to future episodes through `docs/show-template-adaptation.md` (Template Contents, Adaptation Flow). The canvas editor should store which elements adapt and hand off to these specs, not duplicate their behavior.
 
+## Review States
+
+A canvas layout edit should carry a simple status so a creator knows what is safe to apply or save, without reading a raw object tree:
+
+- **draft** — the creator is adjusting layers on the canvas; changes preview but are not applied across the episode yet
+- **applied** — the layout is in use for the current episode, with the preset's pacing and visual logic intact unless the creator intentionally changed it
+- **needs guardrail review** — a Preview Guardrails warning (safe-area, speaker visibility, destination crop, brand readability, visual match, or speaker-count fallback) is unresolved; the status opens the flagged moment and preview surface so the creator can fix it on the canvas before applying it widely
+- **saved as template** — the layout is stored for reuse with its adaptable parts confirmed, so future episodes re-check speakers, brand, captions, and context
+- **diverged from preset** — the creator intentionally changed the preset's structure; keep the change but show that this layout no longer matches its preset baseline
+
+Each state should describe what the creator can apply, save, or still needs to fix on the canvas, not the internal object model.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes canvas editing feel visual, structured, and reusable for podcast layouts. Close work that becomes a generic design editor, breaks speaker-track relationships, or removes the strong preset foundation.
