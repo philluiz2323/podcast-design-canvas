@@ -85,6 +85,23 @@ When a canvas layout is saved as a reusable template, each adaptable element sho
 
 The saved layout is applied to future episodes through `docs/show-template-adaptation.md` (Template Contents, Adaptation Flow). The canvas editor should store which elements adapt and hand off to these specs, not duplicate their behavior.
 
+## Review States
+
+A canvas layout should carry one clear lifecycle status plus optional flags, so a creator always knows where the layout is without an ambiguous mix of labels.
+
+Every layout has exactly one status:
+
+- **draft** — the creator is adjusting layers on the canvas; changes preview but are not applied across the episode yet
+- **applied** — the layout is in use for the current episode
+- **saved as template** — the layout is stored for reuse, with its adaptable parts confirmed so future episodes re-check speakers, brand, captions, and context
+
+On top of status, a layout can carry independent flags that combine on the same layout:
+
+- **customized** — the creator intentionally shaped a distinct look; treat it as the show's own layout while still showing which preset it started from, so customizing feels encouraged rather than like a problem
+- **needs guardrail review** — a Preview Guardrails warning (safe-area, speaker visibility, destination crop, brand readability, visual match, or speaker-count fallback) is unresolved at the flagged moment
+
+Status and flags should appear as a quiet indicator on the canvas — a small badge that stays out of the creator's way — not a blocking banner that interrupts direct manipulation. Only **needs guardrail review** should draw clear attention, and even then it should point the creator to the moment to fix rather than stop the edit. Each label should describe what the creator can apply, save, or still needs to fix on the canvas, not the internal object model.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes canvas editing feel visual, structured, and reusable for podcast layouts. Close work that becomes a generic design editor, breaks speaker-track relationships, or removes the strong preset foundation.
