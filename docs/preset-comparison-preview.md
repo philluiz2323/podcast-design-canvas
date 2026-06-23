@@ -44,6 +44,22 @@ Creators should be able to:
 - apply a preset to the full episode
 - save a preset plus adjustments as a template
 
+## Signal Source Mapping
+
+Each decision signal should be drawn from the spec that already owns that part of the episode, so comparison stays grounded in the current episode rather than becoming a separate settings table. The preview surfaces these signals; it does not redefine them.
+
+| Decision signal | Spec that owns the signal | Relevant section |
+| --- | --- | --- |
+| best-fit show format | `docs/preset-style-picker.md` | Preset Cards |
+| pacing feel | `docs/preset-pacing-controls.md` | Pacing Options, Effects |
+| speaker count support | `docs/speaker-role-mapping.md` | Core Roles, Layout Effects |
+| caption style | `docs/audio-caption-quality-review.md` | Caption Style Presets |
+| branding strength | `docs/show-brand-kit-setup.md` | Brand Inputs, Guardrails |
+| b-roll intensity | `docs/contextual-broll-moments.md` | Visual Types, Quality Rules |
+| template reuse fit | `docs/show-template-adaptation.md` | Template Contents, Adaptation Flow |
+
+Signals should reflect the real episode's speakers, brand kit, and media wherever available. Comparison should never fall back to generic placeholder values for these signals once episode media exists.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes preset choice visual, comparative, and grounded in the current episode. Close work that turns preset selection into a settings table or uses generic mock previews after episode media is available.
