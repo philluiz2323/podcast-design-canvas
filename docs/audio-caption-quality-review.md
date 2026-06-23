@@ -100,6 +100,18 @@ Creators should be able to jump from an issue to the affected moment, play the s
 
 Speaker-name mismatches, unlabeled exchanges, and off-camera voice confusion should open `docs/speaker-attribution-review.md` when the caption problem is really about who is speaking rather than how the text looks.
 
+## Preview Contexts
+
+Creators should check captions and audio where clarity is easiest to lose:
+
+- a full desktop view and a mobile vertical crop
+- a paused frame to read caption contrast and size
+- a fast exchange where caption timing can fall behind
+- a quiet passage and a loud passage to judge leveling
+- a moment with a proper noun the glossary corrected
+
+These previews should use the real episode caption text and audio so the creator can confirm words stay easy to read and hear at the size and pace viewers will see.
+
 ## Review States
 
 The product should use audio and caption status to drive the quality pass and export readiness:
