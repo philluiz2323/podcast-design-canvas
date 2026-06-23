@@ -57,6 +57,33 @@ Template edits should avoid surprising users:
 
 Creators should be able to see when an episode has diverged from its original template. Those episode-versus-template differences should also stay understandable in `docs/episode-version-history.md`, so a creator can compare template application, later layout edits, and episode-only overrides before restoring anything.
 
+## Creator Controls
+
+Applying and maintaining a template should stay a creator-facing arranging step, not a file-management chore:
+
+- save the current episode's look as a new show template
+- apply a template to the next episode and review only the episode-specific decisions
+- map new speaker buckets to template roles in one pass
+- choose the fallback layout when the speaker count changes
+- pin or unpin episode-specific details such as guest, topic, or sponsor
+- keep an episode change local or push it to the template for future episodes
+- compare an episode against its template and restore a part without rebuilding the whole layout
+
+Avoid asking creators to edit raw template files, manage layer trees, or resolve template internals in the default path.
+
+## Review States
+
+Template adaptation status should describe what the creator still needs to decide, in plain creator-facing terms:
+
+- **ready to apply** — the template matches the new episode's speaker count and needs no extra decisions before preview
+- **needs role mapping** — new speaker buckets are not yet mapped to template roles; take the creator to the speaker role step before styling
+- **needs fallback layout** — the speaker count differs from the template, so the creator must confirm a fallback before applying
+- **episode override** — the creator changed something for this episode only; keep it local and show it as a difference against the template
+- **template updated** — the change was pushed to the template for future episodes without rewriting finished exports
+- **diverged** — the episode has drifted from its template; show the difference in the episode's version history so the creator can compare or restore
+
+Each state should describe what the creator decides next and which editing or review surface they land on, not only the label on the template.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes reusable podcast identity practical across episodes and clients. Close work that treats templates as static files, hard-codes one episode's guests into future episodes, or ignores speaker-count adaptation.
