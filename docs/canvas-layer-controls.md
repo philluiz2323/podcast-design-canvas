@@ -57,6 +57,21 @@ Before saving a canvas layout as a template, confirm which parts should adapt ne
 - title moment treatment
 - b-roll placement rules
 
+## Template Reuse Mapping
+
+When a canvas layout is saved as a reusable template, each adaptable element should follow the spec that already owns its adaptation rather than re-implementing brand, caption, role, or context logic inside the canvas. This keeps the editor a layout surface and protects the strong preset foundation.
+
+| Adaptable element | Spec that owns the adaptation | Relevant section |
+| --- | --- | --- |
+| speaker count and roles | `docs/speaker-role-mapping.md` | Core Roles, Layout Effects |
+| guest names and lower-thirds | `docs/social-context-intake.md`, `docs/guest-profile-reuse.md` | Accepted Inputs, Review States; Reusable Details, Episode Review |
+| brand colors and logo placement | `docs/show-brand-kit-setup.md` | Brand Inputs, Reuse |
+| caption style | `docs/audio-caption-quality-review.md` | Caption Style Presets |
+| title moment treatment | `docs/contextual-broll-moments.md` | Visual Types, Approval Flow |
+| b-roll placement rules | `docs/contextual-broll-moments.md` | Approval Flow, Quality Rules |
+
+The saved layout is applied to future episodes through `docs/show-template-adaptation.md` (Template Contents, Adaptation Flow). The canvas editor should store which elements adapt and hand off to these specs, not duplicate their behavior.
+
 ## Maintainer Acceptance Notes
 
 Accept work that makes canvas editing feel visual, structured, and reusable for podcast layouts. Close work that becomes a generic design editor, breaks speaker-track relationships, or removes the strong preset foundation.
