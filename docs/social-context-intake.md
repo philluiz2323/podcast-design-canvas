@@ -60,6 +60,20 @@ When generated context affects visible output, the creator should be able to rev
 
 Corrections should persist into the reusable show template where appropriate, especially recurring host names, show brands, sponsor names, and common segment labels.
 
+## Creator Controls
+
+Keep intake about managing the inputs, not approving the visible output:
+
+- add a public link and attach it to a speaker bucket from episode ingest
+- assign an unmatched link to the right speaker instead of applying it episode-wide
+- add or correct spelling notes for names, brands, products, and recurring terms
+- see the "used for" summary before a link's suggestions are applied
+- block a link, topic, or detail that should not appear on screen
+- jump to the relevant review panel — captions, b-roll, titles, or lower-thirds — to approve how a suggestion actually appears
+- save recurring people, brands, and segment terms to the show template
+
+Avoid turning this screen into a second place to approve captions, b-roll, titles, or lower-thirds, and avoid surfacing unrelated personal details. Each control should manage an input or boundary and let the review panel where a suggestion appears make the final visible decision.
+
 ## Maintainer Acceptance Notes
 
 Accept work that turns social links into better captions, titles, b-roll, lower-thirds, and reference accuracy. Close work that makes social context feel invasive, unrelated to the visible episode, or detached from speaker buckets.
