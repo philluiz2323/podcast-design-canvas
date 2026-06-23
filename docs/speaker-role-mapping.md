@@ -62,6 +62,25 @@ Support common podcast setups:
 
 Before styling starts, the creator should be able to confirm every track's role at a glance and fix the ones that look wrong without restarting ingest.
 
+## Preview Contexts
+
+Role confirmation should be checked on episode moments where the assignment is easiest to judge:
+
+- a host introduction where names and speaker order are obvious
+- a host-and-guest exchange with both lower-thirds visible
+- a captioned moment where attribution would look wrong if the role is wrong
+- an off-camera or producer interruption
+- a late guest join or early exit
+
+These previews should show what the creator would actually notice in the episode, such as the wrong speaker getting host framing, the wrong lower-third, or a guest line attributed like a host line.
+
+Role previews should preserve the same episode moment while the creator checks:
+
+- speaker framing
+- lower-third naming
+- caption attribution
+- host-versus-guest emphasis in the same visible layout
+
 Each track should show a clear role state:
 
 - confirmed — the creator has accepted the role
