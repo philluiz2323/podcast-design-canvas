@@ -124,6 +124,7 @@
               <option value="safe-area">Safe-area guide</option>
             </select>
             <button type="button" id="addLayer">Add</button>
+            <button type="button" id="saveLayout">Save as reusable layout</button>
             <button type="button" class="secondary" id="reset">Reset sample</button>
           </div>
         </div>
@@ -132,6 +133,7 @@
           <h2>Layout preview</h2>
           <div class="stage" id="stage" aria-hidden="true"></div>
           <div id="status" class="status ready">Layout ready to save</div>
+          <div id="applied"></div>
           <div class="checks" id="checks"></div>
           <h2 style="margin-top:18px;">Adapts when reused</h2>
           <p class="summary-note">Choose which parts re-fit each new episode when this layout is saved as a template.</p>
@@ -193,12 +195,22 @@
       let selectedId = "l3";
       let reuse = REUSE_KEYS.map(function (k) { return { id: k.id, label: k.label, on: k.on }; });
       let counter = 6;
+      let savedSignature = null;
+      function signature() { return JSON.stringify({ layers: layers, reuse: reuse }); }
 
       const layersEl = document.querySelector("#layers");
       const stageEl = document.querySelector("#stage");
       const statusEl = document.querySelector("#status");
       const checksEl = document.querySelector("#checks");
       const reuseEl = document.querySelector("#reuse");
+      const saveBtn = document.querySelector("#saveLayout");
+      const appliedEl = document.querySelector("#applied");
+
+      saveBtn.addEventListener("click", function () {
+        if (evaluate(layers).overall !== "ready") { return; }
+        savedSignature = signature();
+        render();
+      });
 
       document.querySelector("#addLayer").addEventListener("click", function () {
         const type = document.querySelector("#addType").value;
@@ -260,7 +272,21 @@
         renderStage();
 
         statusEl.className = "status " + evaluation.overall;
-        statusEl.textContent = evaluation.overall === "ready" ? "Layout ready to save" : "Review before saving";
+        const isSaved = savedSignature !== null && savedSignature === signature();
+        statusEl.textContent = isSaved
+          ? "Saved as a reusable layout"
+          : evaluation.overall === "ready" ? "Layout ready to save" : "Review before saving";
+        saveBtn.disabled = evaluation.overall !== "ready" || isSaved;
+        if (isSaved) {
+          const visible = layers.filter(function (l) { return l.visible; }).length;
+          const adapts = reuse.filter(function (r) { return r.on; }).map(function (r) { return r.label.toLowerCase(); });
+          appliedEl.replaceChildren(el("div", { class: "check info" }, [
+            el("strong", { text: "Saved as a reusable layout" }, []),
+            el("span", { text: visible + " visible layer" + (visible === 1 ? "" : "s") + " · adapts next episode: " + (adapts.length ? adapts.join(", ") : "nothing pinned") }, []),
+          ]));
+        } else {
+          appliedEl.replaceChildren();
+        }
 
         if (evaluation.checks.length === 0) {
           checksEl.replaceChildren(el("p", { class: "summary-note", text: "No layout conflicts. Reorder, lock, and save as a reusable show layout." }, []));
