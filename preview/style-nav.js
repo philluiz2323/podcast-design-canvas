@@ -76,23 +76,46 @@ function setTopTargetWhenEmbedded(link) {
   }
 }
 
-// Keep the episode workflow path (?path=...) on visual-direction links so a creator
-// who entered the style steps from the guided episode path stays in that context,
-// matching the other flow navs (ingest, speaker setup, reuse, episode flow).
-function pathQuerySuffix() {
-  const path = new URLSearchParams(window.location.search).get("path");
-  if (path === "episode") {
-    return "?path=episode";
-  }
-  if (path === "style") {
-    return "?path=style";
-  }
-  return "";
+function pathFromQuery(query) {
+  let q = query || "";
+  if (q.charAt(0) === "?") { q = q.slice(1); }
+  return new URLSearchParams(q).get("path") || "";
 }
 
+function queryWithoutHash(file) {
+  return ((file || "").split("#")[0].split("?")[1] || "");
+}
+
+function mergeRouteSearch(file, overrides) {
+  overrides = overrides || {};
+  const raw = file || "";
+  const hashIndex = raw.indexOf("#");
+  const pathPart = hashIndex === -1 ? raw : raw.slice(0, hashIndex);
+  const hash = hashIndex === -1 ? "" : raw.slice(hashIndex);
+  const qIndex = pathPart.indexOf("?");
+  const base = qIndex === -1 ? pathPart : pathPart.slice(0, qIndex);
+  const params = new URLSearchParams(qIndex === -1 ? "" : pathPart.slice(qIndex + 1));
+  Object.keys(overrides).forEach(function (key) {
+    const value = overrides[key];
+    if (value === null || value === undefined) { params.delete(key); }
+    else { params.set(key, value); }
+  });
+  const search = params.toString();
+  return base + (search ? "?" + search : "") + hash;
+}
+
+// Keep the episode workflow path (?path=...) on visual-direction links so a creator
+// who entered the style steps from the guided episode path stays in that context,
+// merging it canonically with any existing query and hash on the link.
 function hrefWithPath(file) {
-  const suffix = pathQuerySuffix();
-  return suffix ? `${file}${suffix}` : file;
+  const shellPath = new URLSearchParams(window.location.search).get("path");
+  if (shellPath !== "episode" && shellPath !== "style") {
+    return file;
+  }
+  if (pathFromQuery(queryWithoutHash(file)) === shellPath) {
+    return file;
+  }
+  return mergeRouteSearch(file, { path: shellPath });
 }
 
 function setStyleScreenLink(link, file) {

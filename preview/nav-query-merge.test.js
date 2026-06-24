@@ -67,6 +67,13 @@ assertCanonicalPathMerge(
   "show-segment-system.html?path=reuse&draft=segments",
 );
 
+assertCanonicalPathMerge(
+  "style-nav.js",
+  "?path=style",
+  "layout-safe-areas.html?path=episode&draft=safe",
+  "layout-safe-areas.html?path=style&draft=safe",
+);
+
 const ingestSource = fs.readFileSync(path.join(previewDir, "ingest-nav.js"), "utf8");
 function ingestHrefWithPathFor(file, search) {
   const window = { location: { pathname: "/prototype/episode-readiness.html", search } };
@@ -139,4 +146,4 @@ assert.equal(
   "reuse nav preserves unrelated flags and hash segments when merging path context",
 );
 
-console.log("nav query merge: ingest, publish, speaker setup, and reuse path merges are canonical and non-ambiguous");
+console.log("nav query merge: ingest, publish, speaker setup, reuse, and style path merges are canonical and non-ambiguous");
