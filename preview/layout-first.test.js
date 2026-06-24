@@ -302,4 +302,36 @@ elementsById["layout-reset"].listeners.click();
 assert.equal(controller.filledRequiredSlots().length, 0, "reset clears filled required slots");
 assert.ok(revokedUrls.length > 0 && createdUrls.length > 0, "reset revokes created object URLs");
 
+// Duplicate guard: the same recording in two speaker slots means two speakers would
+// share one video, so Continue stays blocked until each slot has a separate recording.
+controller.applyLayout("interview");
+controller.placeVideoFile(controller.zonesBySlot.host, video("same-take.mp4"));
+controller.placeVideoFile(controller.zonesBySlot.guest, video("same-take.mp4"));
+assert.deepEqual(
+  controller.duplicateFileNames(),
+  ["same-take.mp4"],
+  "the same video placed in two speaker slots is detected",
+);
+assert.equal(
+  elementsById["layout-continue"].attributes["aria-disabled"],
+  "true",
+  "Continue is blocked while two speaker slots share the same recording",
+);
+assert.match(
+  elementsById["layout-slot-status"].textContent,
+  /same video is in more than one speaker slot/i,
+  "duplicate guidance is creator-facing",
+);
+controller.placeVideoFile(controller.zonesBySlot.guest, video("guest-take.mp4"));
+assert.deepEqual(
+  controller.duplicateFileNames(),
+  [],
+  "replacing one slot with a separate recording clears the duplicate",
+);
+assert.equal(
+  elementsById["layout-continue"].attributes["aria-disabled"],
+  "false",
+  "Continue is restored once each speaker has a separate recording",
+);
+
 console.log("layout-first landing: required speaker readiness, optional b-roll, and handoff behavior verified");

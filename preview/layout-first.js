@@ -102,10 +102,31 @@
       errorCard.hidden = !message;
     }
 
+    // The same recording dropped into two speaker slots means two speakers would share
+    // one video. Separate synced speaker tracks must stay distinct, so flag any repeats
+    // among the visible filled slots and keep the creator from continuing with them.
+    function duplicateFileNames() {
+      const seen = Object.create(null);
+      const duplicates = [];
+      visibleSlots().forEach((zone) => {
+        if (!zone.classList.contains("filled")) return;
+        const name = (zone.dataset.fileName || "").trim();
+        if (!name) return;
+        if (seen[name]) {
+          if (duplicates.indexOf(name) === -1) duplicates.push(name);
+        } else {
+          seen[name] = true;
+        }
+      });
+      return duplicates;
+    }
+
     function updateContinueState() {
       if (!continueLink) return;
       const required = requiredSlots();
-      const ready = required.length > 0 && required.every((zone) => zone.classList.contains("filled"));
+      const ready = required.length > 0
+        && required.every((zone) => zone.classList.contains("filled"))
+        && duplicateFileNames().length === 0;
       continueLink.classList.toggle("is-disabled", !ready);
       continueLink.setAttribute("aria-disabled", ready ? "false" : "true");
       if (ready && continueLink.dataset.readyHref) {
@@ -129,9 +150,13 @@
         return;
       }
 
+      const duplicates = duplicateFileNames();
       const total = requiredSlots().length;
       const filled = filledRequiredSlots().length;
-      if (filled === total) {
+      if (duplicates.length > 0) {
+        slotStatus.textContent =
+          "The same video is in more than one speaker slot. Give each speaker a separate recording before you continue.";
+      } else if (filled === total) {
         slotStatus.textContent = "Required speaker videos ready. Optional b-roll can be added later.";
       } else {
         const missingNames = requiredSlots()
@@ -312,6 +337,7 @@
       requiredSlots,
       visibleSlots,
       filledRequiredSlots,
+      duplicateFileNames,
       zonesBySlot,
       updateSlotStatus,
     };
