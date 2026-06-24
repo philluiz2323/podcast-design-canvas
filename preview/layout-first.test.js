@@ -1222,4 +1222,30 @@ fireKey(placedVideoIn("host"), "Delete");
 assert.equal(controller.zonesBySlot.host.classList.contains("filled"), false, "Delete removes the focused placed video");
 assert.match(actionStatus.textContent, /Removed the Host video/, "a keyboard removal is announced to screen readers");
 
+// The layout picker is operable with the arrow keys, like placed videos: a keyboard user can
+// step through layouts and the focused one is applied, without tabbing button to button. Every
+// navigation key the handler acts on is advertised via aria-keyshortcuts.
+controller.resetVideos();
+controller.applyLayout("interview");
+const pickerShortcuts = layoutButtons[0].getAttribute("aria-keyshortcuts") || "";
+["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].forEach((key) => {
+  assert.ok(pickerShortcuts.includes(key), "layout options advertise the " + key + " shortcut they handle");
+});
+layoutButtons[0].listeners.keydown({ key: "ArrowRight", preventDefault() {} });
+assert.equal(layoutButtons[1].getAttribute("aria-pressed"), "true", "ArrowRight applies the next layout (solo)");
+assert.equal(lastFocused, layoutButtons[1], "ArrowRight moves focus to the next layout option");
+layoutButtons[1].listeners.keydown({ key: "ArrowDown", preventDefault() {} });
+assert.equal(layoutButtons[2].getAttribute("aria-pressed"), "true", "ArrowDown also advances to the next layout (panel)");
+layoutButtons[2].listeners.keydown({ key: "ArrowUp", preventDefault() {} });
+assert.equal(layoutButtons[1].getAttribute("aria-pressed"), "true", "ArrowUp steps back to the previous layout");
+layoutButtons[1].listeners.keydown({ key: "ArrowLeft", preventDefault() {} });
+assert.equal(layoutButtons[0].getAttribute("aria-pressed"), "true", "ArrowLeft steps back to the previous layout");
+layoutButtons[0].listeners.keydown({ key: "End", preventDefault() {} });
+assert.equal(layoutButtons[2].getAttribute("aria-pressed"), "true", "End applies the last layout (panel)");
+layoutButtons[2].listeners.keydown({ key: "Home", preventDefault() {} });
+assert.equal(layoutButtons[0].getAttribute("aria-pressed"), "true", "Home applies the first layout (interview)");
+layoutButtons[0].listeners.keydown({ key: "Enter", preventDefault() {} });
+assert.equal(layoutButtons[0].getAttribute("aria-pressed"), "true", "a non-navigation key leaves the layout selection unchanged");
+controller.applyLayout("interview");
+
 console.log("layout-first landing: required speaker readiness, optional b-roll, per-slot status, handoff, and layout-switch preservation verified");
