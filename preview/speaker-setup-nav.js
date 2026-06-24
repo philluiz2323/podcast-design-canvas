@@ -18,6 +18,12 @@ const SPEAKER_SETUP_ENTRY = { file: "speaker-role-mapping.html?path=episode", la
 const SPEAKER_SETUP_HANDOFF = { file: "preset-style-picker.html", label: "Pick a preset style" };
 const SPEAKER_SETUP_HANDOFF_PATH = "style";
 
+// Eye-line coherence is where the creator decides each speaker's on-screen placement, so it
+// is the natural point in setup to jump back and (re)place the speaker videos in the layout —
+// the same layout-first placement already offered from the ingest and style steps.
+const LAYOUT_FIRST_PLACEMENT_STEP = "speaker-eye-line-coherence";
+const LAYOUT_FIRST_PLACEMENT_FILE = "layout-first.html";
+
 const PREVIEW_APP_SETUP_TARGETS = new Set([
   screenIdFromFile(SPEAKER_SETUP_ENTRY.file),
   screenIdFromFile(SPEAKER_SETUP_HANDOFF.file),
@@ -182,6 +188,30 @@ function setTopTargetWhenEmbedded(link) {
   }
 }
 
+function layoutFirstPlacementSearch() {
+  const shellPath = new URLSearchParams(window.location.search).get("path");
+  const params = new URLSearchParams();
+  if (shellPath === "episode" || shellPath === "style") {
+    params.set("path", shellPath);
+  }
+  params.set("from", "speaker-setup");
+  const search = params.toString();
+  return search ? `?${search}` : "";
+}
+
+function layoutFirstPlacementHref() {
+  return `../preview/${LAYOUT_FIRST_PLACEMENT_FILE}${layoutFirstPlacementSearch()}`;
+}
+
+function shouldOfferLayoutPlacement(step) {
+  return step && step.id === LAYOUT_FIRST_PLACEMENT_STEP;
+}
+
+function setLayoutPlacementLink(link) {
+  link.href = layoutFirstPlacementHref();
+  setTopTargetWhenEmbedded(link);
+}
+
 function setSetupScreenLink(link, file) {
   const resolved = resolveSetupLink(file);
   if (isEmbeddedInPreviewApp() && isPreviewAppSetupRoute(resolved)) {
@@ -330,6 +360,13 @@ function renderSpeakerSetupNav() {
   setTopTargetWhenEmbedded(app);
   app.textContent = "Preview app";
   wrap.appendChild(app);
+
+  if (shouldOfferLayoutPlacement(step)) {
+    const placement = document.createElement("a");
+    setLayoutPlacementLink(placement);
+    placement.textContent = "Place videos in layout";
+    wrap.appendChild(placement);
+  }
 
   if (previous) {
     const prevLink = document.createElement("a");
