@@ -4,6 +4,46 @@
 // The five core episode-flow screens use episode-flow-nav.js (with prev/next);
 // every other prototype includes this lighter bar so it is never a dead end:
 //   <script src="../preview/tools-nav.js" defer></script>
+// Each screen also shows its role in the episode workflow, matching the shell's
+// "More tools" grouping, so a connected screen tells the creator where it fits.
+
+const TOOL_STAGE = {
+  "episode-readiness.html": "Bring in the recording",
+  "speaker-role-mapping.html": "Bring in the recording",
+  "speaker-attribution-review.html": "Bring in the recording",
+  "speaker-visual-match.html": "Bring in the recording",
+  "speaker-eye-line-coherence.html": "Bring in the recording",
+  "guest-profile-reuse.html": "Bring in the recording",
+  "social-context-intake.html": "Bring in the recording",
+  "preset-style-picker.html": "Choose a visual direction",
+  "preset-comparison-preview.html": "Choose a visual direction",
+  "layout-safe-areas.html": "Choose a visual direction",
+  "speaker-framing-safety.html": "Choose a visual direction",
+  "pause-crosstalk-cleanup.html": "Clean up audio & captions",
+  "transcript-glossary.html": "Clean up audio & captions",
+  "transcript-search-navigation.html": "Clean up audio & captions",
+  "accessibility-readability-checks.html": "Clean up audio & captions",
+  "line-pickup-insert.html": "Clean up audio & captions",
+  "on-screen-correction-note.html": "Clean up audio & captions",
+  "contextual-broll-moments.html": "Add contextual visuals",
+  "contextual-title-cards.html": "Add contextual visuals",
+  "sensitive-moment-review.html": "Add contextual visuals",
+  "show-segment-system.html": "Make it reusable",
+  "show-template-adaptation.html": "Make it reusable",
+  "start-from-previous-episode.html": "Make it reusable",
+  "episode-chapter-markers.html": "Make it reusable",
+  "episode-watch-through-preview.html": "Review & publish",
+  "export-package-handoff.html": "Review & publish",
+  "publish-checklist.html": "Review & publish",
+  "destination-crop-preview.html": "Review & publish",
+  "thumbnail-cover-frame.html": "Review & publish",
+  "show-notes-assembly.html": "Review & publish",
+};
+
+function currentToolStage() {
+  const name = window.location.pathname.split("/").pop() || "";
+  return TOOL_STAGE[name] || "Secondary tool";
+}
 
 function renderToolsNav() {
   // Don't double up if a page already shows the core episode-flow nav.
@@ -81,7 +121,7 @@ function renderToolsNav() {
 
   const role = document.createElement("span");
   role.className = "role";
-  role.textContent = "Secondary tool";
+  role.textContent = `Tools · ${currentToolStage()}`;
   wrap.appendChild(role);
 
   nav.appendChild(wrap);
